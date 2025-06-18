@@ -174,7 +174,7 @@ const Projects = () => {
         </Box>
       ),
       image: bookbuddyImage,
-      link: "https://bookbuddy.netlify.app",
+      link: "https://bookbuddy26.netlify.app",
     },
     {
       title: "Puppy Bowl",
@@ -206,7 +206,7 @@ const Projects = () => {
         </Box>
       ),
       image: puppybowlImage,
-      link: "https://puppybowl.netlify.app",
+      link: "https://puppybowlnoreact.netlify.app",
     },
   ];
 

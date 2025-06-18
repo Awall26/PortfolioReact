@@ -49,12 +49,12 @@ const Home = () => {
           </motion.div>
           <motion.div variants={itemVariants}>
             <Typography variant="h5" color="text.secondary" paragraph>
-              My name is Andrew Walter and I'm a software engineer
+              My name is Andrew Walter and I'm a software engineer.
             </Typography>
           </motion.div>
           <motion.div variants={itemVariants}>
             <Typography variant="h5" color="text.secondary" paragraph>
-              I'm a passionate developer creating amazing web experiences
+              I'm a passionate developer creating amazing web experiences!
             </Typography>
           </motion.div>
         </motion.div>
