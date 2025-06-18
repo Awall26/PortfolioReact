@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
+import { motion } from "framer-motion";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -28,17 +29,46 @@ const theme = createTheme({
 });
 
 function App() {
+  const backgroundVariants = {
+    animate: {
+      backgroundPosition: ["0% 0%", "100% 100%"],
+      transition: {
+        duration: 20,
+        repeat: Infinity,
+        repeatType: "reverse",
+        ease: "linear",
+      },
+    },
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Router>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/projects" element={<Projects />} />
-          <Route path="/contact" element={<Contact />} />
-        </Routes>
+        <div style={{ position: "relative", minHeight: "100vh" }}>
+          <motion.div
+            variants={backgroundVariants}
+            animate="animate"
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background:
+                "radial-gradient(circle at 50% 50%, rgba(25, 118, 210, 0.1) 0%, transparent 50%)",
+              backgroundSize: "200% 200%",
+              zIndex: -1,
+            }}
+          />
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/projects" element={<Projects />} />
+            <Route path="/contact" element={<Contact />} />
+          </Routes>
+        </div>
       </Router>
     </ThemeProvider>
   );

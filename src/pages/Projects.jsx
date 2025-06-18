@@ -9,11 +9,86 @@ import {
   CardActionArea,
   Box,
 } from "@mui/material";
+import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import gamesboiImage from "../assets/Screenshot 2025-06-17 192612.png";
 import bookbuddyImage from "../assets/Screenshot 2025-06-17 193354.png";
 import puppybowlImage from "../assets/Screenshot 2025-06-17 193635.png";
 
 const Projects = () => {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+      },
+    },
+  };
+
+  const TiltCard = ({ children }) => {
+    const x = useMotionValue(0);
+    const y = useMotionValue(0);
+
+    const mouseXSpring = useSpring(x);
+    const mouseYSpring = useSpring(y);
+
+    const rotateX = useTransform(
+      mouseYSpring,
+      [-0.5, 0.5],
+      ["17.5deg", "-17.5deg"]
+    );
+    const rotateY = useTransform(
+      mouseXSpring,
+      [-0.5, 0.5],
+      ["-17.5deg", "17.5deg"]
+    );
+
+    const handleMouseMove = (e) => {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const width = rect.width;
+      const height = rect.height;
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+      const xPct = mouseX / width - 0.5;
+      const yPct = mouseY / height - 0.5;
+      x.set(xPct);
+      y.set(yPct);
+    };
+
+    const handleMouseLeave = () => {
+      x.set(0);
+      y.set(0);
+    };
+
+    return (
+      <motion.div
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{
+          rotateX,
+          rotateY,
+          transformStyle: "preserve-3d",
+        }}
+        whileHover={{ scale: 1.02 }}
+        transition={{ duration: 0.3 }}
+      >
+        <div style={{ transform: "translateZ(75px)" }}>{children}</div>
+      </motion.div>
+    );
+  };
+
   const projects = [
     {
       title: "GamesBoi",
@@ -137,45 +212,65 @@ const Projects = () => {
 
   return (
     <Container maxWidth="lg" sx={{ py: 8 }}>
-      <Typography variant="h3" component="h1" gutterBottom align="center">
-        My Projects
-      </Typography>
-      <Grid container spacing={4}>
-        {projects.map((project, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index}>
-            <Card
-              sx={{ height: "100%", display: "flex", flexDirection: "column" }}
-            >
-              <CardActionArea
-                href={project.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                sx={{ flexGrow: 1 }}
-              >
-                <CardMedia
-                  component="img"
-                  height="200"
-                  image={project.image}
-                  alt={project.title}
-                  sx={{ objectFit: "cover" }}
-                />
-                <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    {project.title}
-                  </Typography>
-                  {typeof project.description === "string" ? (
-                    <Typography variant="body2" color="text.secondary">
-                      {project.description}
-                    </Typography>
-                  ) : (
-                    project.description
-                  )}
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <motion.div variants={itemVariants}>
+          <Typography variant="h3" component="h1" gutterBottom align="center">
+            My Projects
+          </Typography>
+        </motion.div>
+        <Grid container spacing={4}>
+          {projects.map((project, index) => (
+            <Grid item xs={12} sm={6} md={4} key={index}>
+              <motion.div variants={itemVariants}>
+                <TiltCard>
+                  <Card
+                    sx={{
+                      height: "100%",
+                      display: "flex",
+                      flexDirection: "column",
+                      overflow: "hidden",
+                      boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+                    }}
+                  >
+                    <CardActionArea
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      sx={{ flexGrow: 1 }}
+                    >
+                      <Box sx={{ overflow: "hidden" }}>
+                        <CardMedia
+                          component="img"
+                          height="200"
+                          image={project.image}
+                          alt={project.title}
+                          sx={{ objectFit: "cover" }}
+                        />
+                      </Box>
+                      <CardContent sx={{ flexGrow: 1 }}>
+                        <Typography gutterBottom variant="h5" component="h2">
+                          {project.title}
+                        </Typography>
+                        {typeof project.description === "string" ? (
+                          <Typography variant="body2" color="text.secondary">
+                            {project.description}
+                          </Typography>
+                        ) : (
+                          project.description
+                        )}
+                      </CardContent>
+                    </CardActionArea>
+                  </Card>
+                </TiltCard>
+              </motion.div>
+            </Grid>
+          ))}
+        </Grid>
+      </motion.div>
     </Container>
   );
 };
