@@ -56,7 +56,7 @@ function App() {
               right: 0,
               bottom: 0,
               background:
-                "radial-gradient(circle at 50% 50%, rgba(25, 118, 210, 0.25) 0%, rgba(25, 118, 210, 0.15) 30%, transparent 70%)",
+                "radial-gradient(circle at 50% 50%, rgba(107, 33, 168, 0.25) 0%, rgba(107, 33, 168, 0.15) 30%, transparent 70%)",
               backgroundSize: "200% 200%",
               zIndex: -1,
             }}
